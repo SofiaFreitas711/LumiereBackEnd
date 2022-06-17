@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/SofiaFreitas711/LumiereBackEnd#readme",
   "description": "",
+  
   "engines": {
     "node": "16.15.1"
   }
