@@ -30,7 +30,7 @@ exports.create = async (req, res) => {
         }
 
         await filme.save(); // save Filme in the database
-        res.status(201).json({ success: true, msg: "Novo Filme criado.", URL: `/filmes/${filme._id}` });
+        res.status(201).json({ success: true, msg: "Novo Filme criado.", URL: `/filmes/${filme._id}`, id: filme._id });
     }
     catch (err) {
         if (err.name === "ValidationError") {

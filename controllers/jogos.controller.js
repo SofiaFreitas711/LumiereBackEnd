@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
         }
 
         await jogo.save(); // save jogos in the database
-        res.status(201).json({ success: true, msg: "Novo Jogo criado.", URL: `/jogos/${jogo._id}` });
+        res.status(201).json({ success: true, msg: "Novo Jogo criado.", URL: `/jogos/${jogo._id}`, id: jogo._id });
     }
     catch (err) {
         if (err.name === "ValidationError") {
@@ -44,7 +44,6 @@ exports.findAll = async (req, res) => {
 
     // build REGEX to filter tutorials titles with a sub-string - i will do a case insensitive match 
     let condition = tipo ? { tipo: new RegExp(tipo, 'i') } : {};
-
     try {
         let data = await Jogo
             .find(condition)
@@ -127,13 +126,16 @@ exports.findClassificacao = async (req, res) => {
 }
 
 exports.addClassificacao = async (req, res) => {
-    if (!req.body || !req.body.utilizadorID || !req.body.pontuacao) {
+    if (!req.body || !req.body.utilizadorID) {
         res.status(400).json({
             message: "Falta informação para poder prosseguir!"
         });
         return;
     }
-
+    if (!req.body.pontuacao){
+        req.body.pontuacao = 0;
+    }
+    
     try {
         const utilizadorID = await Utilizador.findById(req.body.utilizadorID)
             .select('_id')

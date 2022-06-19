@@ -15,7 +15,7 @@ router.route('/:desafioID')
 
 router.all('*', function (req, res) {
     //send an predefined error message 
-    res.status(404).json({ message: 'Categorias: what???' });
+    res.status(404).json({ message: 'Desafios: what???' });
 })
 
 module.exports = router;

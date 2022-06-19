@@ -12,7 +12,7 @@ router.route('/')
 
 router.route('/:utilizadorID')
     .patch(autenticadoController.verifyToken, utilizadorController.update)
-    .get(autenticadoController.verifyToken, utilizadorController.findOne)
+    .get(utilizadorController.findOne)
     .delete(autenticadoController.verifyToken, utilizadorController.delete);
 
 router.route('/:utilizadorID/favoritos/:filmeID')
@@ -32,7 +32,7 @@ router.route('/login')
 
 router.all('*', function (req, res) {
     //send an predefined error message 
-    res.status(404).json({ message: 'Filmes: what???' });
+    res.status(404).json({ message: 'Utilizadores: what???' });
 })
 
 module.exports = router;

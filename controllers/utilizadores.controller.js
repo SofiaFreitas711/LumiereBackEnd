@@ -19,13 +19,12 @@ exports.create = async (req, res) => {
         tipo: "utilizador",
         favoritos: [],
         lista: [],
-        numJogos: 0,
         desafios: [],
+        desafiosCompletos: []
     });
 
     try {
         await utilizador.save(); // save Utilizador in the database
-        console.log(utilizador)
         res.status(201).json({ success: true, msg: "Novo Utilizador criado.", URL: `/utilizadores/${utilizador._id}` });
     }
     catch (err) {
@@ -69,11 +68,11 @@ exports.findAll = async (req, res) => {
 // Encontre um único utilizador com um id
 exports.findOne = async (req, res) => {
     try {
-        if (req.UtilizadorAutenticadoID !== req.params.utilizadorID) {
-            return res.status(403).json({
-                success: false, msg: "Esta solicitação está disponível apenas para utilizadores ADMINS ou LOGGED!"
-            });
-        }
+        // if (req.UtilizadorAutenticadoID !== req.params.utilizadorID) {
+        //     return res.status(403).json({
+        //         success: false, msg: "Esta solicitação está disponível apenas para utilizadores ADMINS ou LOGGED!"
+        //     });
+        // }
         const utilizador = await Utilizador.findById(req.params.utilizadorID)
             .exec();
 
@@ -269,8 +268,8 @@ exports.addDesafioConcluido = async (req, res) => {
         const desafio = await Desafio.findById(req.params.desafioID)
             .select('_id')
             .exec();
-
-        if (jogo === null) {
+        
+        if (desafio === null) {
             return res.status(404).json({
                 success: false, msg: `Não é possível encontrar nenhum desafio com ID ${req.params.desafioID}.`
             });
@@ -319,12 +318,12 @@ exports.login = async (req, res) => {
                 msg: "Credenciais inválidas!"
             })
         }
-
         const token = jwt.sign({ id: utilizador._id, role: utilizador.tipo },
             config.SECRET, {
             expiresIn: '24h' // 24 hours
         });
         
+
         return res.status(200).json({
             success: true,
             accessToken: token,

@@ -14,8 +14,8 @@ exports.create = async (req, res) => {
                 success: false, msg: "Esta solicitação só é possivel para ADMINISTRADORES!"
             });
         }
+
         await categoria.save(); // save Categoria in the database
-        console.log(categoria)
         res.status(201).json({ success: true, msg: "Nova categoria criada.", URL: `/categorias/${categoria._id}` });
     }
     catch (err) {
@@ -39,7 +39,6 @@ exports.findAll = async (req, res) => {
         let data = await Categoria
             .find()
             .exec();
-        console.log(data);
         res.status(200).json({ success: true, categoria: data });
     }
     catch (err) {
